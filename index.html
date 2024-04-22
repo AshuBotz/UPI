@@ -37,10 +37,10 @@
     // Display payment details
     var paymentDetailsElement = document.getElementById('paymentDetails');
     paymentDetailsElement.innerHTML = `
-        <p>Name: ${params['name'].replace(/\+/g, ' ')}</p>
+        <p>Name: ${decodeURIComponent(params['name'].replace(/\+/g, ' '))}</p>
         <p>UPI: ${params['upi']}</p>
         <p>Amount: ${params['amount']}</p>
-        <p>Description: ${params['description']}</p>
+        <p>Description: ${decodeURIComponent(params['description'].replace(/\+/g, ' '))}</p>
     `;
 
     // Create a button for redirection
@@ -49,7 +49,7 @@
         var upi = params['upi'];
         var name = params['name'].replace(/\+/g, ' '); // Replace '+' with space
         var amount = params['amount'];
-        var description = params['description'];
+        var description = params['description'].replace(/\+/g, ' '); // Replace '+' with space
         var redirectURI = generatePaymentButtonURL(upi, name, amount, description);
         window.location.href = redirectURI;
     });
