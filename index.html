@@ -45,8 +45,8 @@
         var name = params['name'];
         var amount = params['amount'];
         var description = params['description'];
-        var redirectURL = `https://u.pandawep.in/?upi=${encodeURIComponent(upi)}&name=${encodeURIComponent(name)}&amount=${encodeURIComponent(amount)}&description=${encodeURIComponent(description)}`;
-        window.location.href = redirectURL;
+        var redirectURI = `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
+        window.location.href = redirectURI;
     });
 </script>
 
