@@ -150,40 +150,6 @@
         // Call the switchTheme function when the page loads
         switchTheme();
 </script>
-<script>
-    // Function to parse URL parameters
-    function parseParams(url) {
-        var params = {};
-        var queryString = url.split('?')[1];
-        if (queryString) {
-            var pairs = queryString.split('&');
-            for (var i = 0; i < pairs.length; i++) {
-                var pair = pairs[i].split('=');
-                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
-            }
-        }
-        return params;
-    }
 
-    // Extracting parameters from the current URL
-    var currentURL = window.location.href;
-    var params = parseParams(currentURL);
-
-    // Function to check if the URL has the upi parameter
-    function hasUpiParam() {
-        return params.hasOwnProperty('upi');
-    }
-
-    // Function to generate the payment link
-    function generatePaymentLink() {
-        if (!hasUpiParam()) {
-            // Redirect to the desired URL
-            window.location.href = 'https://u.pandawep.in/io.html';
-        }
-    }
-
-    // Call the generatePaymentLink function when the page loads
-    generatePaymentLink();
-</script>
 
 </html>
