@@ -2,77 +2,97 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link id="theme-style" rel="stylesheet" href="styles.css">
-    <meta charset="UTF-8">
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .payment-details {
+            margin-bottom: 20px;
+        }
+        .payment-details p {
+            margin: 5px 0;
+        }
+        #payButton {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #payButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <style>
-    </style>
-    <center>
-        <div class="spinner-box">
-            <div class="configure-border-1">  
-                <div class="configure-core"></div>
-            </div>  
-            <div class="configure-border-2">
-                <div class="configure-core"></div>
-            </div> 
-        </div>
-        
-        <h1 id="payHeading">Pay Now</h1>
-        <p>Generate UPI &nbsp;<span id="countdown">10</span>&nbsp;Seconds...</p>
-        <button class="button-92" role="button" id="paynow">Pay Now</button>
-    </center>
-</body>
-<script>
-    // Function to parse URL parameters
-    function parseParams(url) {
-        var params = {};
-        var queryString = url.split('?')[1];
-        if (queryString) {
-            var pairs = queryString.split('&');
-            for (var i = 0; i < pairs.length; i++) {
-                var pair = pairs[i].split('=');
-                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+
+<div class="container">
+    <div class="payment-details" id="paymentDetails"></div>
+
+    <script>
+        // Function to parse URL parameters
+        function parseParams(url) {
+            var params = {};
+            var queryString = url.split('?')[1];
+            if (queryString) {
+                var pairs = queryString.split('&');
+                for (var i = 0; i < pairs.length; i++) {
+                    var pair = pairs[i].split('=');
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+                }
             }
+            return params;
         }
-        return params;
-    }
 
-    // Function to generate UPI payment link
-    function generatePaymentLink(upi, name, amount, description) {
-        return `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
-    }
+        // Extracting parameters from the current URL
+        var currentURL = window.location.href;
+        var params = parseParams(currentURL);
 
-    // Function to redirect to UPI payment link
-    function redirectToUPI() {
-        window.location.href = generatePaymentLink('{upi}', '{name}', '{amount}', '{description}');
-    }
+        // Function to generate UPI payment link
+        function generatePaymentLink(upi, name, amount, description) {
+            return `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
+        }
 
-    // Countdown function
-    function countdown() {
-        var seconds = 10;
-        var timer = setInterval(function() {
-            document.getElementById("countdown").innerText = seconds;
-            seconds--;
-            if (seconds < 0) {
-                clearInterval(timer);
-                redirectToUPI();
-            }
-        }, 1000);
-    }
+        // Function to open UPI payment link in new tab
+        function openPaymentLink() {
+            var upi = params['upi'];
+            var name = decodeURIComponent(params['name'].replace(/\+/g, ' '));
+            var amount = params['amount'];
+            var description = decodeURIComponent(params['description'].replace(/\+/g, ' '));
+            var paymentLink = generatePaymentLink(upi, name, amount, description);
+            window.open(paymentLink, '_blank');
+        }
 
-    // Call countdown function when page loads
-    window.onload = function() {
-        countdown();
-    };
+        // Function to display payment details
+        function printPaymentDetails() {
+            var paymentDetailsElement = document.getElementById('paymentDetails');
+            paymentDetailsElement.innerHTML = `
+                <p><strong>Name:</strong> ${decodeURIComponent(params['name'].replace(/\+/g, ' '))}</p>
+                <p><strong>UPI:</strong> ${params['upi']}</p>
+                <p><strong>Amount:</strong> ${params['amount']}</p>
+                <p><strong>Description:</strong> ${decodeURIComponent(params['description'].replace(/\+/g, ' '))}</p>
+            `;
+        }
 
-    // Pay Now button click event
-    document.getElementById("paynow").addEventListener("click", function() {
-        redirectToUPI();
-    });
+        // Print payment details when the page loads
+        printPaymentDetails();
+    </script>
 
-    // Dynamic amount
-    document.getElementById("payHeading").innerText = "Pay " + '{amount}' + " Now";
-</script>
+    <button id="payButton" onclick="openPaymentLink()">Pay Now</button>
+</div>
+
+</body>
 </html>
