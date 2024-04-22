@@ -2,24 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link id="theme-style" rel="stylesheet" href="https://ashubotz.github.io/Pay/styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A Powerful Telegram Bot and 30+ Tools">
-    <meta property="og:description" content="A Powerful Telegram Bot and 30+ Tools">
-    <meta name="twitter:description" content="A Powerful Telegram Bot and 30+ Tools">
-    <meta name="keywords" content="telegram bot">
-    <meta name="author" content="Ashu Botz">
-    <meta property="og:url" content="https://graph.org/file/2b8b8671377221740596a.jpg">
-    <meta name="twitter:url" content="https://graph.org/file/2b8b8671377221740596a.jpg">
-    <meta property="og:image" content="https://graph.org/file/2b8b8671377221740596a.jpg">
-    <meta name="twitter:image" content="https://graph.org/file/2b8b8671377221740596a.jpg">
-    <link rel="icon" href="https://graph.org/file/a4425689fac8ee9117ae4.jpg" type="image/x-icon">
-    <title>File To Url</title>
-    <meta property="og:title" content="File To Url">
-    <meta name="twitter:title" content="File To Url">
-    <meta name="twitter:card" content="summary_large_image">
+    <link id="theme-style" rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
 </head>
 <body>
+    <style>
+    </style>
     <center>
         <div class="spinner-box">
             <div class="configure-border-1">  
@@ -30,59 +19,60 @@
             </div> 
         </div>
         
-        <h1>Pay {amount} Now</h1>
+        <h1 id="payHeading">Pay Now</h1>
         <p>Generate UPI &nbsp;<span id="countdown">10</span>&nbsp;Seconds...</p>
         <button class="button-92" role="button" id="paynow">Pay Now</button>
     </center>
-
-    <script>
-        // Redirect function
-        function redirectToUPI() {
-            window.location.href = `upi://pay?pa={upi}&pn={name}&am=${amount}&tn={description}&cu=INR`;
-        }
-
-        // Countdown function
-        function countdown() {
-            var seconds = 10;
-            var timer = setInterval(function() {
-                document.getElementById("countdown").innerText = seconds;
-                seconds--;
-                if (seconds < 0) {
-                    clearInterval(timer);
-                    redirectToUPI();
-                }
-            }, 1000);
-        }
-
-        // Call countdown function when page loads
-        window.onload = function() {
-            countdown();
-        };
-
-        // Pay Now button click event
-        document.getElementById("paynow").addEventListener("click", function() {
-            redirectToUPI();
-        });
-
-        // Function to check if it's daytime
-        function isDayTime() {
-            var now = new Date();
-            var hour = now.getHours();
-            return hour >= 6 && hour < 18; // Assuming 6 AM to 6 PM as daytime
-        }
-
-        // Function to switch CSS based on time of day
-        function switchTheme() {
-            var link = document.getElementById('theme-style');
-            if (isDayTime()) {
-                link.href = 'https://ashubotz.github.io/Pay/light.css';
-            } else {
-                link.href = 'https://ashubotz.github.io/Pay/dark.css';
+</body>
+<script>
+    // Function to parse URL parameters
+    function parseParams(url) {
+        var params = {};
+        var queryString = url.split('?')[1];
+        if (queryString) {
+            var pairs = queryString.split('&');
+            for (var i = 0; i < pairs.length; i++) {
+                var pair = pairs[i].split('=');
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
             }
         }
+        return params;
+    }
 
-        // Call the switchTheme function when the page loads
-        switchTheme();
-    </script>
-</body>
+    // Function to generate UPI payment link
+    function generatePaymentLink(upi, name, amount, description) {
+        return `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
+    }
+
+    // Function to redirect to UPI payment link
+    function redirectToUPI() {
+        window.location.href = generatePaymentLink('{upi}', '{name}', '{amount}', '{description}');
+    }
+
+    // Countdown function
+    function countdown() {
+        var seconds = 10;
+        var timer = setInterval(function() {
+            document.getElementById("countdown").innerText = seconds;
+            seconds--;
+            if (seconds < 0) {
+                clearInterval(timer);
+                redirectToUPI();
+            }
+        }, 1000);
+    }
+
+    // Call countdown function when page loads
+    window.onload = function() {
+        countdown();
+    };
+
+    // Pay Now button click event
+    document.getElementById("paynow").addEventListener("click", function() {
+        redirectToUPI();
+    });
+
+    // Dynamic amount
+    document.getElementById("payHeading").innerText = "Pay " + '{amount}' + " Now";
+</script>
 </html>
