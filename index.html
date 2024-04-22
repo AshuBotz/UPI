@@ -4,95 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UPI Payment</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .payment-details {
-            margin-bottom: 20px;
-        }
-        .payment-details p {
-            margin: 5px 0;
-        }
-        #payButton {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #payButton:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link id="theme-style" rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div class="container">
+    <center>
+    <div class="spinner-box">
+        <div class="configure-border-1">  
+          <div class="configure-core"></div>
+        </div>  
+        <div class="configure-border-2">
+          <div class="configure-core"></div>
+        </div> 
+      </div>
+    <div class="container">
     <div class="payment-details" id="paymentDetails"></div>
-
-    <script>
-        // Function to parse URL parameters
-        function parseParams(url) {
-            var params = {};
-            var queryString = url.split('?')[1];
-            if (queryString) {
-                var pairs = queryString.split('&');
-                for (var i = 0; i < pairs.length; i++) {
-                    var pair = pairs[i].split('=');
-                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
-                }
-            }
-            return params;
-        }
-
-        // Extracting parameters from the current URL
-        var currentURL = window.location.href;
-        var params = parseParams(currentURL);
-
-        // Function to generate UPI payment link
-        function generatePaymentLink(upi, name, amount, description) {
-            return `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
-        }
-
-        // Function to open UPI payment link in new tab
-        function openPaymentLink() {
-            var upi = params['upi'];
-            var name = decodeURIComponent(params['name'].replace(/\+/g, ' '));
-            var amount = params['amount'];
-            var description = decodeURIComponent(params['description'].replace(/\+/g, ' '));
-            var paymentLink = generatePaymentLink(upi, name, amount, description);
-            window.open(paymentLink, '_blank');
-        }
-
-        // Function to display payment details
-        function printPaymentDetails() {
-            var paymentDetailsElement = document.getElementById('paymentDetails');
-            paymentDetailsElement.innerHTML = `
-                <p><strong>Name:</strong> ${decodeURIComponent(params['name'].replace(/\+/g, ' '))}</p>
-                <p><strong>UPI:</strong> ${params['upi']}</p>
-                <p><strong>Amount:</strong> ${params['amount']}</p>
-                <p><strong>Description:</strong> ${decodeURIComponent(params['description'].replace(/\+/g, ' '))}</p>
-            `;
-        }
-
-        // Print payment details when the page loads
-        printPaymentDetails();
-    </script>
-
-    <button id="payButton" onclick="openPaymentLink()">Pay Now</button>
+    <button class="button-92" role="button" id="paynow" onclick="openPaymentLink()">Pay Now</button>
 </div>
-
+</center>
 </body>
+<script>
+    // Function to parse URL parameters
+    function parseParams(url) {
+        var params = {};
+        var queryString = url.split('?')[1];
+        if (queryString) {
+            var pairs = queryString.split('&');
+            for (var i = 0; i < pairs.length; i++) {
+                var pair = pairs[i].split('=');
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+            }
+        }
+        return params;
+    }
+
+    // Extracting parameters from the current URL
+    var currentURL = window.location.href;
+    var params = parseParams(currentURL);
+
+    // Function to generate UPI payment link
+    function generatePaymentLink(upi, name, amount, description) {
+        return `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
+    }
+
+    // Function to open UPI payment link in new tab
+    function openPaymentLink() {
+        var upi = params['upi'];
+        var name = decodeURIComponent(params['name'].replace(/\+/g, ' '));
+        var amount = params['amount'];
+        var description = decodeURIComponent(params['description'].replace(/\+/g, ' '));
+        var paymentLink = generatePaymentLink(upi, name, amount, description);
+        window.open(paymentLink, '_blank');
+    }
+
+    // Function to display payment details
+    function printPaymentDetails() {
+        var paymentDetailsElement = document.getElementById('paymentDetails');
+        paymentDetailsElement.innerHTML = `
+            <p><strong>Name:</strong> ${decodeURIComponent(params['name'].replace(/\+/g, ' '))}</p>
+            <p><strong>UPI:</strong> ${params['upi']}</p>
+            <p><strong>Amount:</strong> ₹${params['amount']}</p>
+            <p><strong>Description:</strong> ${decodeURIComponent(params['description'].replace(/\+/g, ' '))}</p>
+        `;
+    }
+
+    // Print payment details when the page loads
+    printPaymentDetails();
+</script>
+<script>
+            // Function to check if it's daytime
+            function isDayTime() {
+            var now = new Date();
+            var hour = now.getHours();
+            return hour >= 6 && hour < 18; // Assuming 6 AM to 6 PM as daytime
+        }
+
+        // Function to switch CSS based on time of day
+        function switchTheme() {
+            var link = document.getElementById('theme-style');
+            if (isDayTime()) {
+                link.href = 'https://ashubotz.github.io/Pay/light.css';
+            } else {
+                link.href = 'https://ashubotz.github.io/Pay/dark.css';
+            }
+        }
+
+        // Call the switchTheme function when the page loads
+        switchTheme();
+</script>
 </html>
