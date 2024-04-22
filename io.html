@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URI Request Payment Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="To Generate link Share With Friends And Get Payment Esic">
+<meta property="og:description" content="To Generate link Share With Friends And Get Payment Esic">
+<meta name="twitter:description" content="To Generate link Share With Friends And Get Payment Esic">
+<meta name="keywords" content="UPI Payment link Generator">
+<meta name="author" content="Ashu Botz">
+<meta property="og:url" content="https://graph.org/file/15d427037b881170c71b7.jpg">
+<meta name="twitter:url" content="https://graph.org/file/15d427037b881170c71b7.jpg">
+<meta property="og:image" content="https://graph.org/file/15d427037b881170c71b7.jpg">
+<meta name="twitter:image" content="https://graph.org/file/15d427037b881170c71b7.jpg">
+<link rel="icon" href="https://graph.org/file/303e9d788d6aaa0d371ee.jpg" type="image/x-icon">
+<title>UPI Payment link Generator</title>
+<meta property="og:title" content="UPI Payment link Generator">
+<meta name="twitter:title" content="UPI Payment link Generator">
+<meta name="twitter:card" content="summary_large_image">
+    <style>
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+p{
+font-size: 10px;
+}
+    </style>
+</head>
+<body>
+<center>
+    <div class="container">
+        <h1>URI Request Payment Generator</h1>
+        <form id="generateForm">
+            <div class="form-group">
+                <label for="upi">UPI:</label>
+                <input type="text" id="upi" name="upi" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Payment Amount:</label>
+                <input type="text" id="amount" name="amount" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+            </div>
+            <button type="submit">Generate Token</button>
+        </form>
+        <p id="generatedTokenURL"></p>
+        <button id="copyTokenButton">Copy Token</button>
+    </div>
+</center>
+    <script>
+        function generateTokenURL(upi, name, amount, description) {
+            return `https://u.pandawep.in/?upi=${encodeURIComponent(upi)}&name=${encodeURIComponent(name)}&amount=${encodeURIComponent(amount)}&description=${encodeURIComponent(description)}`;
+        }
+
+        // Add event listener to the form for token generation
+        document.getElementById('generateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var upi = document.getElementById('upi').value;
+            var name = document.getElementById('name').value;
+            var amount = document.getElementById('amount').value;
+            var description = document.getElementById('description').value;
+
+            var tokenURL = generateTokenURL(upi, name, amount, description);
+
+            // Display the generated token URL
+            document.getElementById('generatedTokenURL').innerText = tokenURL;
+        });
+
+        // Add event listener to the "Copy Token" button
+        document.getElementById('copyTokenButton').addEventListener('click', function() {
+            var tokenURL = document.getElementById('generatedTokenURL').innerText;
+
+            // Copy token URL to clipboard
+            navigator.clipboard.writeText(tokenURL).then(function() {
+                console.log('Token URL copied to clipboard');
+                // Optionally, you can provide feedback to the user that the URL has been copied.
+                alert('Token URL copied to clipboard');
+            }, function(err) {
+                console.error('Failed to copy token URL: ', err);
+                // Handle error if copying failed
+                alert('Failed to copy token URL');
+            });
+        });
+    </script>
+</body>
+</html>
