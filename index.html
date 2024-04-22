@@ -26,38 +26,33 @@
     <meta name="twitter:title" content="UPI Payment link Generator" />
     <meta name="twitter:card" content="summary_large_image" />
     <style>
-  /* Customizing button style */
-.button-87 {
-  margin: 0 auto;
-  padding: 15px 30px;
+.centered-link {
   text-align: center;
+}
+
+.centered-link a {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 15px 30px;
   text-transform: uppercase;
   transition: 0.5s;
   background-size: 200% auto;
   color: white;
   border-radius: 10px;
-  display: block;
   border: 0px;
   box-shadow: 0px 0px 14px 1px #f09819;
-  background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
+  background-image: linear-gradient(45deg, #FF512F 0%, #F09819 51%, #FF512F 100%);
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50%;
-}
-
-.button-87:hover {
-  background-position: right center;
-  /* change the direction of the change here */
-  color: #fff;
   text-decoration: none;
 }
 
+.centered-link a:hover {
+  background-position: right center;
+  color: #fff;
+}
 
 
 
@@ -73,13 +68,18 @@
           <div class="configure-core"></div>
         </div> 
       </div>
+      <p>Generate UPI &nbsp;<span id="countdown">10</span>&nbsp;Seconds...</p>
     <div class="container">
     <div class="payment-details" id="paymentDetails"></div>
     <button class="button-92" role="button" id="paynow" onclick="openPaymentLink()">Pay Now</button>
-    <center><a href="https://u.pandawep.in/io.html"><button class="button-87" role="button">Generate Url</button></a></center>
+
+      
 </div>
 
 </center>
+<center class="centered-link">
+    <a href="https://u.pandawep.in/io.html">Generate Url</a>
+  </center>
 </body>
 <script>
     // Function to parse URL parameters
@@ -150,6 +150,55 @@
         // Call the switchTheme function when the page loads
         switchTheme();
 </script>
+<script>
+     // Function to parse URL parameters
+     function parseParams(url) {
+            var params = {};
+            var queryString = url.split('?')[1];
+            if (queryString) {
+                var pairs = queryString.split('&');
+                for (var i = 0; i < pairs.length; i++) {
+                    var pair = pairs[i].split('=');
+                    var key = decodeURIComponent(pair[0]);
+                    var value = decodeURIComponent(pair[1] || '');
+                    // Exclude 'redirect_url' parameter
+                    if (key.toLowerCase() !== 'redirect_url') {
+                        params[key] = value;
+                    }
+                }
+            }
+            return params;
+        }
 
+        // Extracting parameters from the current URL
+        var currentURL = window.location.href;
+        var params = parseParams(currentURL);
 
+        // Function to generate UPI payment link
+        function generatePaymentLink(upi, name, amount, description) {
+            return `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
+        }
+
+        // Function to open UPI payment link in new tab
+        function openPaymentLink() {
+            var upi = params['upi'];
+            var name = decodeURIComponent(params['name'].replace(/\+/g, ' '));
+            var amount = params['amount'];
+            var description = decodeURIComponent(params['description'].replace(/\+/g, ' '));
+            var paymentLink = generatePaymentLink(upi, name, amount, description);
+            window.open(paymentLink, '_blank');
+        }
+
+        // Update countdown timer
+        var timeLeft = 10;
+        var countdownElement = document.getElementById('countdown');
+        var countdownInterval = setInterval(function() {
+            timeLeft--;
+            countdownElement.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                openPaymentLink();
+            }
+        }, 1000);
+</script>
 </html>
