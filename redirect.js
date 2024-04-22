@@ -12,8 +12,9 @@ function parseParams(url) {
     return params;
 }
 
-// Function to convert parameters to UPI format
-function convertToUPIFormat(params) {
+// Function to convert token URL to UPI format
+function convertTokenToUPI(token) {
+    var params = parseParams(token);
     var upi = params['u'];
     var name = params['n'];
     var amount = params['a'];
@@ -25,16 +26,17 @@ function convertToUPIFormat(params) {
 // Function to redirect after 1 second
 function redirectWithDelay(upi) {
     setTimeout(function() {
-        window.location.href = upi;
+        window.location.href = `upi://${upi}`;
     }, 1000);
 }
 
-// Extracting parameters from the current URL
+// Extracting token from the current URL
 var currentURL = window.location.href;
-var params = parseParams(currentURL);
+var tokenIndex = currentURL.indexOf('?');
+var token = currentURL.substring(tokenIndex + 1);
 
-// Converting parameters to UPI format
-var upiFormat = convertToUPIFormat(params);
+// Converting token to UPI format
+var upiFormat = convertTokenToUPI(token);
 
 // Redirecting after 1 second
 redirectWithDelay(upiFormat);
