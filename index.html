@@ -25,6 +25,11 @@
         return params;
     }
 
+    // Function to generate payment button URL
+    function generatePaymentButtonURL(upi, name, amount, description) {
+        return `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
+    }
+
     // Extracting parameters from the current URL
     var currentURL = window.location.href;
     var params = parseParams(currentURL);
@@ -32,7 +37,7 @@
     // Display payment details
     var paymentDetailsElement = document.getElementById('paymentDetails');
     paymentDetailsElement.innerHTML = `
-        <p>Name: ${params['name']}</p>
+        <p>Name: ${params['name'].replace(/\+/g, ' ')}</p>
         <p>UPI: ${params['upi']}</p>
         <p>Amount: ${params['amount']}</p>
         <p>Description: ${params['description']}</p>
@@ -42,10 +47,10 @@
     var payButton = document.getElementById('payButton');
     payButton.addEventListener('click', function() {
         var upi = params['upi'];
-        var name = params['name'];
+        var name = params['name'].replace(/\+/g, ' '); // Replace '+' with space
         var amount = params['amount'];
         var description = params['description'];
-        var redirectURI = `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(description)}&cu=INR`;
+        var redirectURI = generatePaymentButtonURL(upi, name, amount, description);
         window.location.href = redirectURI;
     });
 </script>
