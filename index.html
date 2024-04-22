@@ -7,7 +7,8 @@
 </head>
 <body>
 
-<div id="countdown"></div>
+<div id="paymentDetails"></div>
+<button id="payButton">Pay Now</button>
 
 <script>
     // Function to parse URL parameters
@@ -24,47 +25,29 @@
         return params;
     }
 
-    // Function to display countdown
-    function displayCountdown(seconds) {
-        var countdownElement = document.getElementById('countdown');
-        countdownElement.innerHTML = 'Redirecting in ' + seconds + ' seconds...';
-
-        // Decrement countdown every second
-        var countdownInterval = setInterval(function() {
-            seconds--;
-            countdownElement.innerHTML = 'Redirecting in ' + seconds + ' seconds...';
-            if (seconds === 0) {
-                clearInterval(countdownInterval);
-            }
-        }, 1000);
-    }
-
-    // Function to generate UPI payment link
-    function generatePaymentLink(upi, name, amount, description) {
-        return `https://u.pandawep.in/?upi=${encodeURIComponent(upi)}&name=${encodeURIComponent(name)}&amount=${encodeURIComponent(amount)}&description=${encodeURIComponent(description)}`;
-    }
-
     // Extracting parameters from the current URL
     var currentURL = window.location.href;
     var params = parseParams(currentURL);
 
-    // Get parameters from URL
-    var upi = params['upi'];
-    var name = params['name'];
-    var amount = params['amount'];
-    var description = params['description'];
+    // Display payment details
+    var paymentDetailsElement = document.getElementById('paymentDetails');
+    paymentDetailsElement.innerHTML = `
+        <p>Name: ${params['name']}</p>
+        <p>UPI: ${params['upi']}</p>
+        <p>Amount: ${params['amount']}</p>
+        <p>Description: ${params['description']}</p>
+    `;
 
-    // Generate UPI payment link
-    var paymentLink = generatePaymentLink(upi, name, amount, description);
-
-    // Display countdown
-    displayCountdown(5); // Redirect after 5 seconds
-
-    // Create a hyperlink for payment
-    var paymentLinkElement = document.createElement('a');
-    paymentLinkElement.href = paymentLink;
-    paymentLinkElement.textContent = 'Click here to pay';
-    document.body.appendChild(paymentLinkElement);
+    // Create a button for redirection
+    var payButton = document.getElementById('payButton');
+    payButton.addEventListener('click', function() {
+        var upi = params['upi'];
+        var name = params['name'];
+        var amount = params['amount'];
+        var description = params['description'];
+        var redirectURL = `https://u.pandawep.in/?upi=${encodeURIComponent(upi)}&name=${encodeURIComponent(name)}&amount=${encodeURIComponent(amount)}&description=${encodeURIComponent(description)}`;
+        window.location.href = redirectURL;
+    });
 </script>
 
 </body>
