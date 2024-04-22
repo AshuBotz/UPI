@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+</head>
+<body>
+
+<script>
+    // Function to parse URL parameters
+    function parseParams(url) {
+        var params = {};
+        var queryString = url.split('?')[1];
+        if (queryString) {
+            var pairs = queryString.split('&');
+            for (var i = 0; i < pairs.length; i++) {
+                var pair = pairs[i].split('=');
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+            }
+        }
+        return params;
+    }
+
+    // Function to generate the new URI
+    function generateNewURI(params) {
+        var upi = params['u'];
+        var name = params['n'];
+        var amount = params['a'];
+        var description = params['d'];
+        var newURI = `upi://pay?pa=${upi}&pn=${name}&am=${amount}&tn=${description}&cu=INR`;
+        return newURI;
+    }
+
+    // Function to redirect after 1 second
+    function redirectWithDelay(uri) {
+        setTimeout(function() {
+            window.location.href = uri;
+        }, 1000);
+    }
+
+    // Extracting parameters from the current URL
+    var currentURL = window.location.href;
+    var params = parseParams(currentURL);
+
+    // Generating new URI based on filtered parameters
+    var newURI = generateNewURI(params);
+
+    // Redirecting after 1 second
+    redirectWithDelay(newURI);
+</script>
+
+</body>
+</html>
